@@ -157,6 +157,29 @@
             line-height: 1.4;
         }
 
+        .relationship-status {
+            margin-top: 8px;
+            padding: 8px 16px;
+            background: #123a7a;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9em;
+            color: #fff;
+            text-align: center;
+        }
+        
+        .relationship-icon {
+            font-size: 16px;
+        }
+        
+        .relationship-text {
+            font-weight: 500;
+        }
+
         .section {
             animation: fadeInUp 0.8s ease-out;
         }

@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Digital Hub</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .floating-shape {
+            position: absolute;
+            background: linear-gradient(45deg, rgba(59, 130, 246, 0.1), rgba(147, 197, 253, 0.1));
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-shape:nth-child(1) {
+            width: 100px;
+            height: 100px;
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .floating-shape:nth-child(2) {
+            width: 80px;
+            height: 80px;
+            top: 60%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .floating-shape:nth-child(3) {
+            width: 120px;
+            height: 120px;
+            bottom: 20%;
+            left: 5%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        /* Desktop Layout - 2 Column Grid */
+        .main-content {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            gap: 50px;
+            align-items: start;
+        }
+
+        .left-sidebar {
+            position: sticky;
+            top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .right-content {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .profile-section {
+            text-align: center;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .profile-image {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #93c5fd);
+            margin: 0 auto 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            border: 4px solid rgba(59, 130, 246, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 50%;
+        }
+
+        .profile-image::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transform: rotate(45deg);
+            animation: shimmer 3s linear infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .profile-image:hover {
+            transform: scale(1.08);
+            box-shadow: 0 25px 50px rgba(59, 130, 246, 0.4);
+        }
+
+        .profile-name {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #3b82f6, #93c5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .profile-tagline {
+            color: #94a3b8;
+            font-size: 16px;
+            margin-bottom: 35px;
+            line-height: 1.4;
+        }
+
+        .section {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            color: #3b82f6;
+            position: relative;
+            text-align: left;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background: linear-gradient(90deg, #3b82f6, #93c5fd);
+            border-radius: 2px;
+        }
+
+        .social-links {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .link-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .link-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .link-item:hover::before {
+            left: 100%;
+        }
+
+        .link-item:hover {
+            transform: translateX(8px);
+            border-color: #3b82f6;
+            box-shadow: 0 12px 30px rgba(59, 130, 246, 0.25);
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .link-icon {
+            font-size: 20px;
+            margin-right: 15px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .link-text {
+            flex-grow: 1;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .content-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.05), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .content-card:hover::before {
+            left: 100%;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(59, 130, 246, 0.4);
+            box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .skill-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .skill-item:hover {
+            transform: translateY(-3px);
+            border-color: #3b82f6;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.1);
+        }
+
+        .skill-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+            color: #3b82f6;
+        }
+
+        .skill-title {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #93c5fd;
+        }
+
+        .skill-text {
+            font-size: 13px;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .gallery-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.08), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .gallery-item:hover::before {
+            left: 100%;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-5px);
+            border-color: #3b82f6;
+            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.2);
+        }
+
+        .gallery-placeholder {
+            width: 100%;
+            height: 170px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.1), rgba(147, 197, 253, 0.1));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin-bottom: 15px;
+            border: 2px dashed rgba(59, 130, 246, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .gallery-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 12px;
+        }
+
+        .gallery-item:hover .gallery-placeholder {
+            transform: scale(1.05);
+            border-color: #3b82f6;
+        }
+
+        .gallery-caption {
+            font-size: 15px;
+            font-weight: bold;
+            color: #93c5fd;
+            margin-bottom: 6px;
+        }
+
+        .gallery-description {
+            font-size: 13px;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+
+        .fact-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 18px;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(59, 130, 246, 0.1);
+        }
+
+        .fact-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+
+        .fact-emoji {
+            font-size: 24px;
+            margin-right: 15px;
+            margin-top: 2px;
+        }
+
+        .fact-text {
+            color: #e2e8f0;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .quote {
+            font-style: italic;
+            font-size: 16px;
+            color: #93c5fd;
+            margin-bottom: 20px;
+            position: relative;
+            padding: 20px 25px;
+            background: rgba(59, 130, 246, 0.05);
+            border-radius: 12px;
+            border-left: 4px solid #3b82f6;
+            line-height: 1.6;
+        }
+
+        .quote:last-child {
+            margin-bottom: 0;
+        }
+
+        .quote::before {
+            content: '"';
+            font-size: 32px;
+            color: #3b82f6;
+            position: absolute;
+            top: 5px;
+            left: 8px;
+            font-family: serif;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+        .section:nth-child(5) { animation-delay: 0.5s; }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding: 30px;
+            color: #64748b;
+            font-size: 16px;
+            grid-column: 1 / -1;
+        }
+
+        /* Tablet Layout (768px to 1024px) */
+        @media (max-width: 1024px) {
+            .container {
+                max-width: 100%;
+                padding: 30px 20px;
+            }
+
+            .main-content {
+                grid-template-columns: 350px 1fr;
+                gap: 40px;
+            }
+
+            .profile-image {
+                width: 140px;
+                height: 140px;
+                font-size: 45px;
+            }
+
+            .profile-name {
+                font-size: 26px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            .skills-grid,
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .content-card {
+                padding: 25px;
+            }
+        }
+
+        /* Small Tablet Layout (576px to 768px) */
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px 15px;
+            }
+
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .left-sidebar {
+                position: static;
+                max-width: 100%;
+            }
+
+            .profile-section {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .profile-image {
+                width: 120px;
+                height: 120px;
+                font-size: 40px;
+                margin-bottom: 20px;
+            }
+
+            .profile-name {
+                font-size: 24px;
+                margin-bottom: 8px;
+            }
+
+            .profile-tagline {
+                font-size: 15px;
+                margin-bottom: 25px;
+            }
+
+            .section-title {
+                font-size: 18px;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+
+            .section-title::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .social-links {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+            }
+
+            .link-item {
+                padding: 14px 16px;
+            }
+
+            .link-text {
+                font-size: 14px;
+            }
+
+            .content-card {
+                padding: 20px;
+            }
+
+            .skills-grid,
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .skill-item,
+            .gallery-item {
+                padding: 18px;
+            }
+
+            .footer {
+                margin-top: 40px;
+                padding: 20px;
+                font-size: 14px;
+            }
+        }
+
+        /* Mobile Layout (up to 576px) */
+        @media (max-width: 576px) {
+            .container {
+                padding: 20px 10px;
+            }
+
+            .main-content {
+                gap: 25px;
+            }
+
+            .profile-image {
+                width: 100px;
+                height: 100px;
+                font-size: 35px;
+                margin-bottom: 15px;
+            }
+
+            .profile-name {
+                font-size: 22px;
+            }
+
+            .profile-tagline {
+                font-size: 14px;
+                margin-bottom: 20px;
+            }
+
+            .section-title {
+                font-size: 16px;
+                margin-bottom: 15px;
+            }
+
+            .social-links {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .link-item {
+                padding: 12px 14px;
+            }
+
+            .link-icon {
+                font-size: 18px;
+                margin-right: 12px;
+            }
+
+            .link-text {
+                font-size: 13px;
+            }
+
+            .content-card {
+                padding: 18px;
+            }
+
+            .skill-item,
+            .gallery-item {
+                padding: 15px;
+            }
+
+            .skill-icon {
+                font-size: 28px;
+                margin-bottom: 10px;
+            }
+
+            .skill-title {
+                font-size: 14px;
+            }
+
+            .skill-text {
+                font-size: 12px;
+            }
+
+            .gallery-placeholder {
+                height: 150px;
+                font-size: 35px;
+                margin-bottom: 12px;
+            }
+
+            .gallery-caption {
+                font-size: 14px;
+            }
+
+            .gallery-description {
+                font-size: 12px;
+            }
+
+            .fact-item {
+                margin-bottom: 15px;
+                padding: 12px 0;
+            }
+
+            .fact-emoji {
+                font-size: 20px;
+                margin-right: 12px;
+            }
+
+            .fact-text {
+                font-size: 14px;
+            }
+
+            .quote {
+                font-size: 14px;
+                padding: 15px 20px;
+                margin-bottom: 15px;
+            }
+
+            .floating-shape {
+                display: none;
+            }
+
+            .footer {
+                margin-top: 30px;
+                padding: 15px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-animation">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+    </div>
+
+    <div class="container">
+        <div class="main-content">
+            <!-- Left Sidebar - Profile & Social Links -->
+            <div class="left-sidebar">
+                <!-- Profile Section -->
+                <div class="profile-section section">
+                    <div class="profile-image">
+                        <img src="https://i.postimg.cc/gJQYXVHP/495575663-2336728863390657-2634707713714296247-n.jpg" alt="Jovanny De Leon">
+                    </div>
+                    <h1 class="profile-name">Jovanny De Leon</h1>
+                    <p class="profile-tagline">Self-taught Web Developer</p>
+                </div>
+
+                <!-- Social Links Section -->
+                <div class="section">
+                    <h2 class="section-title">Connect With Me</h2>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/vanny.dev" class="link-item" target="_blank">
+                            <span class="link-icon"><i class="fab fa-instagram"></i></span>
+                            <span class="link-text">Instagram</span>
+                        </a>
+                        <a href="https://x.com/vanny_dev" class="link-item" target="_blank">
+                            <span class="link-icon"><i class="fab fa-twitter"></i></span>
+                            <span class="link-text">Twitter</span>
+                        </a>
+                        <a href="https://www.linkedin.com/in/jovanny-de-leon-a48a492b0/" class="link-item" target="_blank">
+                            <span class="link-icon"><i class="fab fa-linkedin"></i></span>
+                            <span class="link-text">LinkedIn</span>
+                        </a>
+                        <a href="https://www.tiktok.com/@vanny_.dev" class="link-item" target="_blank">
+                            <span class="link-icon"><i class="fab fa-tiktok"></i></span>
+                            <span class="link-text">TikTok</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Content Area -->
+            <div class="right-content">
+                <!-- About Me Section -->
+                <div class="section">
+                    <div class="content-card">
+                        <h2 class="section-title">About Me</h2>
+                        <div class="skills-grid">
+                            <div class="skill-item">
+                                <div class="skill-icon">🌎</div>
+                                <div class="skill-title">Language Learner</div>
+                                <div class="skill-text">Bikol(dialect) • Filipino<br>English • Spanish<br>Bahasa Indonesia</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-icon">💻</div>
+                                <div class="skill-title">Tech Lover</div>
+                                <div class="skill-text">JavaScript • NodeJS<br>HTML • CSS<br>C++ • Python<br>PHP • MySQL</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-icon">🎮</div>
+                                <div class="skill-title">Gamer</div>
+                                <div class="skill-text">Valorant • Osu<br>Roblox • Minecraft<br>Clash of Clans<br>Mobile Legends</div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-icon">👟</div>
+                                <div class="skill-title">Athlete</div>
+                                <div class="skill-text">Sepak Takraw<br>Chess</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gallery Section -->
+                <div class="section">
+                    <div class="content-card">
+                        <h2 class="section-title">Life in Action</h2>
+                        <div class="gallery-grid">
+                            <div class="gallery-item">
+                                <div class="gallery-placeholder">
+                                    <img src="https://i.postimg.cc/7ZrDpVmN/484364600-2282888678774676-785959305781259554-n.jpg" alt="coding">
+                                </div>
+                                <div class="gallery-caption">Coding Session</div>
+                                <div class="gallery-description">Creating a project during my internship</div>
+                            </div>
+                            <div class="gallery-item">
+                                <div class="gallery-placeholder">
+                                    <img src="https://i.postimg.cc/76j04dC6/ef749c71-6607-454f-b09d-43843d6fc97e.jpg" alt="gaming">
+                                </div>
+                                <div class="gallery-caption">Gaming Time</div>
+                                <div class="gallery-description">Relaxing with strategy games</div>
+                            </div>
+                            <div class="gallery-item">
+                                <div class="gallery-placeholder">
+                                    <img src="https://i.postimg.cc/KYqsPGWH/406415526-198242730012703-474983697142313880-n.jpg" alt="training">
+                                </div>
+                                <div class="gallery-caption">Sepak Takraw</div>
+                                <div class="gallery-description">Competitive matches</div>
+                            </div>
+                            <div class="gallery-item">
+                                <div class="gallery-placeholder">
+                                    <img src="https://i.postimg.cc/76vD3ndc/80326fc6-07d9-48f3-8130-df3e0926b57f.jpg" alt="">
+                                </div>
+                                <div class="gallery-caption">Studying Language</div>
+                                <div class="gallery-description">With Duolingo and Indonesian friends</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fun Facts Section -->
+                <div class="section">
+                    <div class="content-card">
+                        <h2 class="section-title">Fun Facts</h2>
+                        <div class="fact-item">
+                            <span class="fact-emoji">☕</span>
+                            <span class="fact-text">Powered by coffee, curiosity, and endless YouTube tutorials.</span>
+                        </div>
+                        <div class="fact-item">
+                            <span class="fact-emoji">📚</span>
+                            <span class="fact-text">Still debugging life — one line of code at a time.</span>
+                        </div>
+                        <div class="fact-item">
+                            <span class="fact-emoji">💻</span>
+                            <span class="fact-text">I write code that sometimes works... and sometimes doesn't... and I'm never sure why.</span>
+                        </div>
+                        <div class="fact-item">
+                            <span class="fact-emoji">🎶</span>
+                            <span class="fact-text">Music on, code editor open — that's my zone.</span>
+                        </div>
+                        <div class="fact-item">
+                            <span class="fact-emoji">🤝</span>
+                            <span class="fact-text">Best friends with Stack Overflow and Ctrl + Z.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quotes Section -->
+                <div class="section">
+                    <div class="content-card">
+                        <h2 class="section-title">Words I Live By</h2>
+                        <div class="quote">
+                            It's not a bug, it's a feature.
+                        </div>
+                        <div class="quote">
+                            If it works, don't touch it.
+                        </div>
+                        <div class="quote">
+                            Real programmers count from 0.
+                        </div>
+                        <div class="quote">
+                            My code doesn't always work, but when it does, I don't know why.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            Made with ❤️ and lots of ☕
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.section');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Add click animation to links
+            const links = document.querySelectorAll('.link-item');
+            links.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    this.style.transform = 'scale(0.95) translateX(8px)';
+                    setTimeout(() => {
+                        this.style.transform = 'translateX(8px)';
+                    }, 100);
+                });
+            });
+
+            // Animate profile image on scroll
+            // window.addEventListener('scroll', function() {
+            //     const profileImage = document.querySelector('.profile-image');
+            //     const scrolled = window.pageYOffset;
+            //     profileImage.style.transform = `rotate(${scrolled * 0.05}deg) scale(${1 + scrolled * 0.0001})`;
+            // });
+
+            // Add hover effects to content cards
+            const contentCards = document.querySelectorAll('.content-card');
+            contentCards.forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px) scale(1.02)';
+                });
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(-5px) scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
